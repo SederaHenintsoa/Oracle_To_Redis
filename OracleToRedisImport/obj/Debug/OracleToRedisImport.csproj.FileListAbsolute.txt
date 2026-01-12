@@ -1,0 +1,16 @@
+D:\Document\Admin_oracle\OracleToRedisImport\OracleToRedisImport\bin\Debug\OracleToRedisImport.exe.config
+D:\Document\Admin_oracle\OracleToRedisImport\OracleToRedisImport\obj\Debug\OracleToRedisImport.csprojResolveAssemblyReference.cache
+D:\Document\Admin_oracle\OracleToRedisImport\OracleToRedisImport\bin\Debug\OracleToRedisImport.exe
+D:\Document\Admin_oracle\OracleToRedisImport\OracleToRedisImport\bin\Debug\OracleToRedisImport.pdb
+D:\Document\Admin_oracle\OracleToRedisImport\OracleToRedisImport\bin\Debug\Newtonsoft.Json.dll
+D:\Document\Admin_oracle\OracleToRedisImport\OracleToRedisImport\bin\Debug\StackExchange.Redis.dll
+D:\Document\Admin_oracle\OracleToRedisImport\OracleToRedisImport\bin\Debug\Newtonsoft.Json.xml
+D:\Document\Admin_oracle\OracleToRedisImport\OracleToRedisImport\bin\Debug\StackExchange.Redis.xml
+D:\Document\Admin_oracle\OracleToRedisImport\OracleToRedisImport\obj\Debug\OracleToRedisImport.exe
+D:\Document\Admin_oracle\OracleToRedisImport\OracleToRedisImport\obj\Debug\OracleToRedisImport.pdb
+D:\Document\Admin_oracle\OracleToRedisImport\OracleToRedisImport\bin\Debug\Oracle.ManagedDataAccess.dll
+D:\Document\Admin_oracle\OracleToRedisImport\OracleToRedisImport\obj\Debug\OracleToRedisImport.FormsWindow.LoginForm.resources
+D:\Document\Admin_oracle\OracleToRedisImport\OracleToRedisImport\obj\Debug\OracleToRedisImport.Properties.Resources.resources
+D:\Document\Admin_oracle\OracleToRedisImport\OracleToRedisImport\obj\Debug\OracleToRedisImport.csproj.GenerateResource.Cache
+D:\Document\Admin_oracle\OracleToRedisImport\OracleToRedisImport\obj\Debug\OracleToRedisImport.FormsWindow.MainForm.resources
+D:\Document\Admin_oracle\OracleToRedisImport\OracleToRedisImport\bin\Debug\ConfigAdmin\admin.config
