@@ -83,6 +83,16 @@ namespace OracleToRedisImport.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap _76f3fd4fac046302a4cc208e053f258a11 {
+            get {
+                object obj = ResourceManager.GetObject("76f3fd4fac046302a4cc208e053f258a11", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap c2f3c433ab69e3163dd8c614bc111fb0 {
             get {
                 object obj = ResourceManager.GetObject("c2f3c433ab69e3163dd8c614bc111fb0", resourceCulture);

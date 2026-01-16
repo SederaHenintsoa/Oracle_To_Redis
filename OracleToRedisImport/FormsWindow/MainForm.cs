@@ -18,14 +18,25 @@ namespace OracleToRedisImport.FormsWindow
 {
     public partial class MainForm : Form
     {
+        private JsonToRedisService redisService;
+        private OracleService oracleServices;
+        private OracleToRedisMigrationService migrationService;
+        private UtilisateurService utilisateurService;
+        private string JsonCourant = "";
+        private string TableCourante = "";
+
         public MainForm()
         {
             InitializeComponent();
-            //serviceRedis = new JsonToRedis();
-           
-        }
 
-        private string currentRedisKey = "";
+            oracleServices = new OracleService("User id=coop_user;Password=coop_bd_9006;Data Source=localhost/XE");
+
+            redisService = new JsonToRedisService("localhost:6379");
+
+            migrationService = new OracleToRedisMigrationService(oracleServices, redisService);
+
+            utilisateurService = new UtilisateurService(oracleServices, redisService);
+        }
 
         private string JsonStyle(string json)
         {
@@ -138,12 +149,13 @@ namespace OracleToRedisImport.FormsWindow
 
             string json = OracleJsonProcess.GetJsonFormOracle(sql);
             rtbJson.Text = JsonStyle(json);
+            JsonCourant = json;
+            TableCourante = "Utilisateur";
+
             ColorizeJson(rtbJson);
 
-            string formattedJson = JsonStyle(json);
-            LoadJsonToTree(formattedJson);
-
-            currentRedisKey = "utilisateur:json";
+            //string formattedJson = JsonStyle(json);
+            LoadJsonToTree(json);
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -152,9 +164,14 @@ namespace OracleToRedisImport.FormsWindow
 
             string json = OracleJsonProcess.GetJsonFormOracle(sql);
             rtbJson.Text = JsonStyle(json);
+            JsonCourant = json;
+            TableCourante = "trajet";
+
             ColorizeJson(rtbJson);
 
-            currentRedisKey = "trajet:json";
+            //string formattedJson = JsonStyle(json);
+            LoadJsonToTree(json);
+
         }
 
         private void button4_Click(object sender, EventArgs e)
@@ -163,9 +180,14 @@ namespace OracleToRedisImport.FormsWindow
 
             string json = OracleJsonProcess.GetJsonFormOracle(sql);
             rtbJson.Text = JsonStyle(json);
+            JsonCourant = json;
+            TableCourante = "voyage";
+
             ColorizeJson(rtbJson);
 
-            currentRedisKey = "voyage:json";
+//            string formattedJson = JsonStyle(json);
+            LoadJsonToTree(json);
+
         }
 
         private void button5_Click(object sender, EventArgs e)
@@ -174,10 +196,16 @@ namespace OracleToRedisImport.FormsWindow
 
             string json = OracleJsonProcess.GetJsonFormOracle(sql);
             rtbJson.Text = JsonStyle(json);
+            JsonCourant = json;
+            TableCourante = "reservation";
+
             ColorizeJson(rtbJson);
 
-            currentRedisKey = "reservation:json";
+            //string formattedJson = JsonStyle(json);
+            LoadJsonToTree(json);
+
         }
+
 
         private void btnExporteJson_Click(object sender, EventArgs e)
         {
@@ -206,37 +234,112 @@ namespace OracleToRedisImport.FormsWindow
         }
 
     
-
         private void btnImportCles_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(rtbJson2.Text))
+            
+            try
             {
-                MessageBox.Show("Aucun JSON à Importer", "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
+                migrationService.MigrerTout();
+  
+                MessageBox.Show("Données importeés avec succès dans Redis \n Clé :", "Succès", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
-                    
-            string redisKey = currentRedisKey; 
-            // ex: "utilisateur:json"
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erreur Redis : "+ ex.Message ,"Erreur", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
 
-            JsonToRedisService redisService = new JsonToRedisService("localhost:6379");
+            
+           JsonCourant = "Oracle :" +TableCourante.ToLower();
+           Console.WriteLine(JsonCourant);
+            /*
+            redisService.SaveJsons(JsonCourant, JsonCourant);
 
-            redisService.SaveJson(redisKey, rtbJson2.Text);
+            string ResultJsonRedis = redisService.GetValue(JsonCourant);
+            //MessageBox.Show("DEUG \nClé :"+ redisKeyCourant + "\n JSON null ?"+ (ResultJsonRedis == null),"Debug");
+            richTextBox1.Text = "CLES REDIS :" + JsonCourant + "\n\n" + JsonStyle(ResultJsonRedis);
 
-            MessageBox.Show(
-                "JSON importé avec succès dans Redis",
-                "Succès",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Information
-            );
+            ColorizeJson(rtbRedis);*/
         }
 
-        private void btnVoirCles_Click(object sender, EventArgs e)
+        
+        private void btnVoirCles_Click_1(object sender, EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(rtbJson2.Text))
+            try
             {
-                MessageBox.Show("Aucune Clé existante", "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Clés Redis :\n\n" + "Oracle.utilisateur\n" + "Oracle:trajet\n" + "Oracle:voyage\n" + "Oracle:reservation", "Redis",
+                MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erreur Redis : " + ex.Message, "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+
+            List<string> keys = redisService.GetAllkeys();
+
+            if (keys.Count == 0)
+            {
+                MessageBox.Show("Aucune clé Redis Trouvée ");
                 return;
             }
+
+            rtbRedis.Clear();
+            rtbRedis.AppendText("CLES REDIS DISPONIBLES:\n\n:");
+
+                foreach(string key in keys){
+                    rtbRedis.AppendText("-"+ key + "\n");
+                }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void tabPage1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void tabPage4_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button8_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (utilisateurService == null)
+                {
+                    throw new Exception("Utilisateur null");
+                }
+                if(oracleServices == null)
+                    throw new Exception("OracleService null");
+                if(redisService == null)
+                    throw new Exception("redisService null");
+                if(migrationService == null)
+                    throw new Exception("migrationService null");
+
+                string json = utilisateurService.MigrationUsersToRedis();
+
+                MessageBox.Show(
+                    "Migration des utilisateurs terminée", "Succès", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                richTextBox2.Text = json;
+                ColorizeJson(richTextBox2);
+                LoadJsonToTree(json);
+            }
+            catch (Exception exc)
+            {
+                MessageBox.Show(exc.Message,"Erreur", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+            }
+            
+        }
+
+        private void richTextBox2_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

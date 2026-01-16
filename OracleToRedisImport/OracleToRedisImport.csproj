@@ -77,7 +77,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Services\JsonToRedisService.cs" />
+    <Compile Include="Services\MigrationService.cs" />
     <Compile Include="Services\OracleService.cs" />
+    <Compile Include="Services\OracleToRedisMigrationService.cs" />
     <Compile Include="Services\RedisService.cs" />
     <Compile Include="Services\ReservationService.cs" />
     <Compile Include="Services\TrajetMigrationService.cs" />
@@ -85,6 +87,7 @@
     <Compile Include="Services\VoyageService.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\76f3fd4fac046302a4cc208e053f258a11.jpg" />
     <None Include="Resources\c2f3c433ab69e3163dd8c614bc111fb013.jpg" />
     <None Include="Resources\c2f3c433ab69e3163dd8c614bc111fb012.jpg" />
     <None Include="Resources\c2f3c433ab69e3163dd8c614bc111fb011.jpg" />
