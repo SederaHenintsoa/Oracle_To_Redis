@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using OracleToRedisImport.Services;
+﻿using System.Collections.Generic;
+using OracleToRedisImport.Models;
 
 namespace OracleToRedisImport.Services
 {
@@ -26,12 +22,31 @@ namespace OracleToRedisImport.Services
             reservationService = r;
         }
 
-        public void MigrerTout()
+        public Dictionary<string, MigrationResult> MigrerTout()
         {
-            utilisateurService.MigrationUsersToRedis();
-            trajetService.MigrationTrajetToRedis();
-            voyageService.MigrationVoyageToRedis();
-            reservationService.MigrationReservationToRedis();
+            var result = new Dictionary<string, MigrationResult>();
+
+            result.Add(
+                "Oracle:utilisateur",
+                utilisateurService.MigrationUsersToRedis()
+            );
+
+            result.Add(
+                "Oracle:trajet",
+                trajetService.MigrationTrajetToRedis()
+            );
+
+            result.Add(
+                "Oracle:voyage",
+                voyageService.MigrationVoyageToRedis()
+            );
+
+            result.Add(
+                "Oracle:reservation",
+                reservationService.MigrationReservationToRedis()
+            );
+
+            return result;
         }
     }
 }

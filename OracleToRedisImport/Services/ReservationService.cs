@@ -4,24 +4,39 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using OracleToRedisImport.Models;
+using Newtonsoft.Json;
+
 
 namespace OracleToRedisImport.Services
 {
     class ReservationService
     {
         private OracleService oracle;
-        private RedisService redis;
+        private JsonToRedisService redis;
 
-        public ReservationService(OracleService ORS, RedisService RS)
+        public ReservationService(OracleService ORS, JsonToRedisService RS)
         {
             oracle = ORS;
             redis = RS;
         }
 
-        public void MigrationReservationToRedis()
+        public MigrationResult MigrationReservationToRedis()
         {
             string sql = "SELECT ID_RESERVATION, ID_CLIENT, ID_VOYAGE ,DATE_RESERVATION, NB_PLACES , ETAT_RESERVATION, ETAT_PAIEMENT FROM RESERVATION";
             var rows = oracle.ExecuteSelect(sql);
+            if (rows == null || rows.Count == 0)
+            {
+                Console.WriteLine("Aucune DOnnee recuperer d'oracle");
+                return new MigrationResult
+                {
+                    Table = "RESERVATION",
+                    Count = 0,
+                    Json = "[]"
+                };
+            }
+
+
+            List<Reservation> reservations = new List<Reservation>();
 
             foreach (var row in rows)
             {
@@ -36,9 +51,18 @@ namespace OracleToRedisImport.Services
                     etat_paiement = row["ETAT_PAIEMENT"] == DBNull.Value ? "" : row["ETAT_PAIEMENT"].ToString(), 
                 };
 
-                redis.SaveObjectsTables("Reservartion : "+ r.id_reservation, r);
+                redis.SaveJsons("Reservartion : "+ r.id_reservation, r);
+                reservations.Add(r);
             }
             Console.WriteLine("Migration de "+ rows.Count + " reservation terminée !");
+
+            //return JsonConvert.SerializeObject(reservations, Formatting.Indented);
+            return new MigrationResult
+            {
+                Table = "RESERVATION",
+                Count = reservations.Count,
+                Json = JsonConvert.SerializeObject(reservations, Formatting.Indented)
+            };
         }
     }
 }

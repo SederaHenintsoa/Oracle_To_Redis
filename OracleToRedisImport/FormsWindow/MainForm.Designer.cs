@@ -57,6 +57,12 @@
             this.button10 = new System.Windows.Forms.Button();
             this.button9 = new System.Windows.Forms.Button();
             this.button8 = new System.Windows.Forms.Button();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.MgrTout = new System.Windows.Forms.Button();
+            this.progressMigration = new System.Windows.Forms.ProgressBar();
+            this.lblProgress = new System.Windows.Forms.Label();
+            this.bgMigrations = new System.ComponentModel.BackgroundWorker();
             this.tabMain.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -77,7 +83,7 @@
             this.textBox1.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.textBox1.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox1.ForeColor = System.Drawing.Color.Navy;
-            this.textBox1.Location = new System.Drawing.Point(0, 648);
+            this.textBox1.Location = new System.Drawing.Point(0, 685);
             this.textBox1.Name = "textBox1";
             this.textBox1.ReadOnly = true;
             this.textBox1.RightToLeft = System.Windows.Forms.RightToLeft.No;
@@ -99,7 +105,7 @@
             this.tabMain.Multiline = true;
             this.tabMain.Name = "tabMain";
             this.tabMain.SelectedIndex = 0;
-            this.tabMain.Size = new System.Drawing.Size(1146, 648);
+            this.tabMain.Size = new System.Drawing.Size(1146, 685);
             this.tabMain.TabIndex = 1;
             // 
             // tabPage1
@@ -115,7 +121,7 @@
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage1.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.tabPage1.Size = new System.Drawing.Size(1138, 615);
+            this.tabPage1.Size = new System.Drawing.Size(1138, 652);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Accueil";
             this.tabPage1.Click += new System.EventHandler(this.tabPage1_Click);
@@ -310,7 +316,7 @@
             this.tabPage3.Location = new System.Drawing.Point(4, 29);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(1138, 615);
+            this.tabPage3.Size = new System.Drawing.Size(1138, 652);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "JSON -> Redis";
             // 
@@ -376,6 +382,11 @@
             // tabPage4
             // 
             this.tabPage4.BackColor = System.Drawing.Color.AliceBlue;
+            this.tabPage4.Controls.Add(this.lblProgress);
+            this.tabPage4.Controls.Add(this.progressMigration);
+            this.tabPage4.Controls.Add(this.MgrTout);
+            this.tabPage4.Controls.Add(this.label4);
+            this.tabPage4.Controls.Add(this.label3);
             this.tabPage4.Controls.Add(this.richTextBox2);
             this.tabPage4.Controls.Add(this.button11);
             this.tabPage4.Controls.Add(this.button10);
@@ -384,16 +395,18 @@
             this.tabPage4.Location = new System.Drawing.Point(4, 29);
             this.tabPage4.Name = "tabPage4";
             this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage4.Size = new System.Drawing.Size(1138, 615);
+            this.tabPage4.Size = new System.Drawing.Size(1138, 652);
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "Migration Directe";
             this.tabPage4.Click += new System.EventHandler(this.tabPage4_Click);
             // 
             // richTextBox2
             // 
-            this.richTextBox2.Location = new System.Drawing.Point(796, 131);
+            this.richTextBox2.BackColor = System.Drawing.SystemColors.InactiveBorder;
+            this.richTextBox2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.richTextBox2.Location = new System.Drawing.Point(776, 88);
             this.richTextBox2.Name = "richTextBox2";
-            this.richTextBox2.Size = new System.Drawing.Size(293, 286);
+            this.richTextBox2.Size = new System.Drawing.Size(319, 458);
             this.richTextBox2.TabIndex = 4;
             this.richTextBox2.Text = "";
             this.richTextBox2.TextChanged += new System.EventHandler(this.richTextBox2_TextChanged);
@@ -403,49 +416,117 @@
             this.button11.BackColor = System.Drawing.Color.LightSeaGreen;
             this.button11.Font = new System.Drawing.Font("Trebuchet MS", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button11.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.button11.Location = new System.Drawing.Point(443, 376);
+            this.button11.Location = new System.Drawing.Point(447, 345);
             this.button11.Name = "button11";
             this.button11.Size = new System.Drawing.Size(272, 41);
             this.button11.TabIndex = 3;
             this.button11.Text = "Migrer Resérvations";
             this.button11.UseVisualStyleBackColor = false;
+            this.button11.Click += new System.EventHandler(this.button11_Click);
             // 
             // button10
             // 
             this.button10.BackColor = System.Drawing.Color.LightSeaGreen;
             this.button10.Font = new System.Drawing.Font("Trebuchet MS", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button10.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.button10.Location = new System.Drawing.Point(443, 297);
+            this.button10.Location = new System.Drawing.Point(447, 264);
             this.button10.Name = "button10";
             this.button10.Size = new System.Drawing.Size(272, 42);
             this.button10.TabIndex = 2;
             this.button10.Text = "Migrer Voyages";
             this.button10.UseVisualStyleBackColor = false;
+            this.button10.Click += new System.EventHandler(this.button10_Click);
             // 
             // button9
             // 
             this.button9.BackColor = System.Drawing.Color.LightSeaGreen;
             this.button9.Font = new System.Drawing.Font("Trebuchet MS", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button9.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.button9.Location = new System.Drawing.Point(443, 210);
+            this.button9.Location = new System.Drawing.Point(447, 171);
             this.button9.Name = "button9";
             this.button9.Size = new System.Drawing.Size(272, 46);
             this.button9.TabIndex = 1;
             this.button9.Text = "Migrer Trajets";
             this.button9.UseVisualStyleBackColor = false;
+            this.button9.Click += new System.EventHandler(this.button9_Click);
             // 
             // button8
             // 
             this.button8.BackColor = System.Drawing.Color.LightSeaGreen;
             this.button8.Font = new System.Drawing.Font("Trebuchet MS", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button8.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.button8.Location = new System.Drawing.Point(443, 122);
+            this.button8.Location = new System.Drawing.Point(447, 88);
             this.button8.Name = "button8";
             this.button8.Size = new System.Drawing.Size(272, 42);
             this.button8.TabIndex = 0;
             this.button8.Text = "Migrer Utilisateurs";
             this.button8.UseVisualStyleBackColor = false;
             this.button8.Click += new System.EventHandler(this.button8_Click);
+            // 
+            // label3
+            // 
+            this.label3.BackColor = System.Drawing.Color.LightCyan;
+            this.label3.Dock = System.Windows.Forms.DockStyle.Top;
+            this.label3.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.ForeColor = System.Drawing.Color.DimGray;
+            this.label3.Location = new System.Drawing.Point(3, 3);
+            this.label3.Name = "label3";
+            this.label3.Padding = new System.Windows.Forms.Padding(5);
+            this.label3.Size = new System.Drawing.Size(1132, 42);
+            this.label3.TabIndex = 5;
+            this.label3.Text = "CLIQUEZ SUR LA MIGRATION SOUHAITER";
+            this.label3.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.BackColor = System.Drawing.Color.LightCyan;
+            this.label4.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.label4.Location = new System.Drawing.Point(473, 423);
+            this.label4.Name = "label4";
+            this.label4.Padding = new System.Windows.Forms.Padding(5);
+            this.label4.Size = new System.Drawing.Size(221, 38);
+            this.label4.TabIndex = 6;
+            this.label4.Text = "OU MIGRER TOUT ICI";
+            // 
+            // MgrTout
+            // 
+            this.MgrTout.BackColor = System.Drawing.Color.LightSeaGreen;
+            this.MgrTout.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.MgrTout.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.MgrTout.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.MgrTout.Location = new System.Drawing.Point(456, 499);
+            this.MgrTout.Name = "MgrTout";
+            this.MgrTout.Size = new System.Drawing.Size(248, 47);
+            this.MgrTout.TabIndex = 7;
+            this.MgrTout.Text = "Migrer tout";
+            this.MgrTout.UseVisualStyleBackColor = false;
+            this.MgrTout.Click += new System.EventHandler(this.btnMigrerTout_Click);
+            // 
+            // progressMigration
+            // 
+            this.progressMigration.BackColor = System.Drawing.Color.Azure;
+            this.progressMigration.Location = new System.Drawing.Point(281, 613);
+            this.progressMigration.Name = "progressMigration";
+            this.progressMigration.Size = new System.Drawing.Size(564, 23);
+            this.progressMigration.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
+            this.progressMigration.TabIndex = 8;
+            // 
+            // lblProgress
+            // 
+            this.lblProgress.AutoSize = true;
+            this.lblProgress.Location = new System.Drawing.Point(474, 577);
+            this.lblProgress.Name = "lblProgress";
+            this.lblProgress.Size = new System.Drawing.Size(98, 21);
+            this.lblProgress.TabIndex = 9;
+            this.lblProgress.Text = "En attente...";
+            this.lblProgress.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            // 
+            // bgMigrations
+            // 
+            this.bgMigrations.WorkerReportsProgress = true;
+            this.bgMigrations.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bgMigrations_DoWork_1);
             // 
             // MainForm
             // 
@@ -454,7 +535,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.DarkCyan;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.ClientSize = new System.Drawing.Size(1146, 675);
+            this.ClientSize = new System.Drawing.Size(1146, 712);
             this.Controls.Add(this.tabMain);
             this.Controls.Add(this.textBox1);
             this.DoubleBuffered = true;
@@ -476,6 +557,7 @@
             this.tabPage3.ResumeLayout(false);
             this.tabPage3.PerformLayout();
             this.tabPage4.ResumeLayout(false);
+            this.tabPage4.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -511,5 +593,11 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.RichTextBox richTextBox1;
         private System.Windows.Forms.RichTextBox richTextBox2;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Button MgrTout;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.ProgressBar progressMigration;
+        private System.Windows.Forms.Label lblProgress;
+        private System.ComponentModel.BackgroundWorker bgMigrations;
     }
 }

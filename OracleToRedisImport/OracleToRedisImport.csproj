@@ -65,6 +65,8 @@
     <Compile Include="FormsWindow\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Models\MigrationResult.cs" />
+    <Compile Include="Models\MigrationWorkerResult.cs" />
     <Compile Include="Models\Reservation.cs" />
     <Compile Include="Models\Trajet.cs" />
     <Compile Include="Models\Voyage.cs" />

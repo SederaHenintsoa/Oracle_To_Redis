@@ -13,37 +13,59 @@ namespace OracleToRedisImport.Services
     class TrajetMigrationService
     {
         private OracleService oracle;
-        private RedisService redis;
-
-        public TrajetMigrationService(OracleService ORS, RedisService RS)
+        private JsonToRedisService redis;
+       
+        public TrajetMigrationService(OracleService oracleServices, JsonToRedisService redisService)
         {
-            oracle = ORS;
-            redis = RS;
+            oracle = oracleServices;
+            redis = redisService;
         }
 
-        public void MigrationTrajetToRedis()
+        public MigrationResult MigrationTrajetToRedis()
         {
 
             string sql = "SELECT ID_TRAJET, DEPART, DESTINATION, DATE_DEPART, PRIX, ID_VOITURE FROM TRAJET";
 
             var rows = oracle.ExecuteSelect(sql);
+            if (rows == null || rows.Count == 0)
+            {
+                Console.WriteLine("Aucune DOnnee recuperer d'oracle");
+                return new MigrationResult
+                {
+                    Table = "TRAJETS",
+                    Count = 0,
+                    Json = "[]"
+                };
+            }
+
+
+            List<Trajet> trajets = new List<Trajet>();
 
             foreach (var row in rows)
             {
                 Trajet t = new Trajet
                 {
-                    id_trajet = Convert.ToInt32(row["ID_TRAJET"]),
-                    depart = row["DEPART"].ToString(),
-                    destionation = row["DESTINATION"].ToString(),
-                    date_depart = Convert.ToDateTime(row["DATE_DEPART"]).ToString("yyyy-MM-dd"),
-                    prix = Convert.ToInt32(row["PRIX"]),
-                    id_voiture = Convert.ToInt32(row["ID_VOITURE"])
+                    id_trajet = row["ID_TRAJET"] == DBNull.Value ? 0 : Convert.ToInt32(row["ID_TRAJET"]),
+                    depart = row["DEPART"] == DBNull.Value ? "" : row["DEPART"].ToString(),
+                    destionation = row["DESTINATION"] == DBNull.Value ? "" : row["DESTINATION"].ToString(),
+                    date_depart = row["DATE_DEPART"] == DBNull.Value ? DateTime.MinValue : Convert.ToDateTime(row["DATE_DEPART"]),
+                    prix = row["PRIX"] == DBNull.Value ? 0 : Convert.ToInt32(row["PRIX"]),
+                    id_voiture = row["ID_VOITURE"] == DBNull.Value ? 0 : Convert.ToInt32(row["ID_VOITURE"]),
                 };
 
-                redis.SaveObjectsTables("trajet:" + t.id_trajet, t);
+                redis.SaveJsons("trajet:" + t.id_trajet, t);
+                trajets.Add(t);
+
             }
             Console.WriteLine("Migration de " + rows.Count + " trajet terminée !");
-            
+
+            //return JsonConvert.SerializeObject(trajets, Formatting.Indented);
+            return new MigrationResult
+            {
+                Table = "TRAJETS",
+                Count = trajets.Count,
+                Json = JsonConvert.SerializeObject(trajets, Formatting.Indented)
+            };
         }
     }
 }

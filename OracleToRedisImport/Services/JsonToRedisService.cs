@@ -19,9 +19,11 @@ namespace OracleToRedisImport.Services
             _db = redis.GetDatabase();
         }
 
-        public void SaveJsons(string redisKey, string json)
+        public void SaveJsons(string key, object value)
         {
-            _db.StringSet(redisKey, json);
+            //_db.StringSet(redisKey, json);
+            string json = JsonConvert.SerializeObject(value);
+            _db.StringSet(key, json);
         }
     
         public List<string> GetAllkeys()
@@ -30,13 +32,13 @@ namespace OracleToRedisImport.Services
             return server.Keys().Select(k => k.ToString()).ToList();
         }
         
-        /*
-        public RedisKey[] GetAllkeys()
+       
+        /* RedisKey[] GetAllkeys()
         {
             var server = redis.GetServer(redis.GetEndPoints().First());
             return server.Keys().ToArray();
         }
-          */
+         */
 
 
         public string GetValue(string key)

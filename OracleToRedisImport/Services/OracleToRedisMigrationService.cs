@@ -43,7 +43,7 @@ namespace OracleToRedisImport.Services
                 "oracle:voyage");
 
             MigrerTable(
-                "SELECT id_reservation, id_client, id_voyage, date_reservation, nb_places, etat_reservation FROM reservation",
+                "SELECT id_reservation, id_client, id_voyage, date_reservation, nb_places, etat_reservation, etat_paiement FROM reservation",
                 "oracle:reservation");
             
         }

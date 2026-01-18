@@ -9,8 +9,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Diagnostics;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
+using OracleToRedisImport.Models;
 using Oracle.ManagedDataAccess.Client;
 using OracleToRedisImport.Services;
 
@@ -18,10 +20,18 @@ namespace OracleToRedisImport.FormsWindow
 {
     public partial class MainForm : Form
     {
+        private string migrationResult = "";
         private JsonToRedisService redisService;
         private OracleService oracleServices;
-        private OracleToRedisMigrationService migrationService;
+     //   private OracleToRedisMigrationService migrationService;
+
+        private MigrationService migrationServices;
+        
         private UtilisateurService utilisateurService;
+        private TrajetMigrationService trajetService;
+        private VoyageService voyageService;
+        private ReservationService reservationService;
+
         private string JsonCourant = "";
         private string TableCourante = "";
 
@@ -33,11 +43,115 @@ namespace OracleToRedisImport.FormsWindow
 
             redisService = new JsonToRedisService("localhost:6379");
 
-            migrationService = new OracleToRedisMigrationService(oracleServices, redisService);
-
             utilisateurService = new UtilisateurService(oracleServices, redisService);
+
+            trajetService = new TrajetMigrationService(oracleServices, redisService);
+
+            voyageService = new VoyageService(oracleServices, redisService);
+
+            reservationService = new ReservationService(oracleServices, redisService);
+
+            migrationServices = new MigrationService(utilisateurService, trajetService, voyageService, reservationService);
+
+            bgMigrations.DoWork += bgMigrations_DoWork;
+            bgMigrations.ProgressChanged += bgMigrations_ProgressChanged;
+            bgMigrations.RunWorkerCompleted += bgMigrations_RunWorkerCompleted;
         }
 
+        private void bgMigrations_DoWork(object sender, DoWorkEventArgs e)
+        {
+            BackgroundWorker worker = sender as BackgroundWorker;
+
+            worker.ReportProgress(10, "Migration des utilisateurs...");
+            var users = utilisateurService.MigrationUsersToRedis();
+
+            worker.ReportProgress(35, "Migration des trajets...");
+            var trajets = trajetService.MigrationTrajetToRedis();
+
+            worker.ReportProgress(60, "Migration des voyages...");
+            var voyages = voyageService.MigrationVoyageToRedis();
+
+            worker.ReportProgress(85, "Migration des réservations...");
+            var reservations = reservationService.MigrationReservationToRedis();
+
+            worker.ReportProgress(100, "Migration terminée");
+
+            e.Result = new MigrationWorkerResult
+            {
+                Utilisateurs = users,
+                Trajets = trajets,
+                Voyages  = voyages,
+                Reservations = reservations
+            };
+        }
+
+        private void bgMigrations_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            progressMigration.Value = e.ProgressPercentage;
+            lblProgress.Text = e.UserState.ToString();
+        }
+
+
+        private void bgMigrations_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            var result = e.Result as MigrationWorkerResult;
+
+            richTextBox2.Clear();
+
+            richTextBox2.AppendText("=== UTILISATEURS (" + result.Utilisateurs.Count + ") ===\n");
+            richTextBox2.AppendText(result.Utilisateurs.Json + "\n\n");
+
+            richTextBox2.AppendText("=== TRAJETS (" + result.Trajets.Count + ") ===\n");
+            richTextBox2.AppendText(result.Trajets.Json + "\n\n");
+
+            richTextBox2.AppendText("=== VOYAGES (" + result.Voyages.Count + ") ===\n");
+            richTextBox2.AppendText(result.Voyages.Json + "\n\n");
+
+            richTextBox2.AppendText("=== RESERVATIONS (" + result.Reservations.Count + ") ===\n");
+            richTextBox2.AppendText(result.Reservations.Json);
+
+            ColorizeJson(richTextBox2);
+            EnableMigrationButtons();
+
+            MessageBox.Show(
+                "Migration complète terminée avec succès",
+                "Succès",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Information);
+        }
+
+       
+       
+        private void ResetProgress()
+        {
+            progressMigration.Value = 0;
+            lblProgress.Text = "Démarrage de la migration...";
+            Application.DoEvents();
+        }
+
+        private void UpdateProgres(int value, string message)
+        {
+            progressMigration.Value = value;
+            lblProgress.Text = message;
+            Application.DoEvents();
+        }
+
+        private void DisableMigrationButtons()
+        {
+            button8.Enabled = false;
+            button9.Enabled = false;
+            button10.Enabled = false;
+            button11.Enabled = false;
+            MgrTout.Enabled = false;
+        }
+        private void EnableMigrationButtons()
+        {
+            button8.Enabled = true;
+            button9.Enabled = true;
+            button10.Enabled = true;
+            button11.Enabled = true;
+            MgrTout.Enabled = true;
+        }
         private string JsonStyle(string json)
         {
             JToken JsonParser = JToken.Parse(json);
@@ -192,7 +306,7 @@ namespace OracleToRedisImport.FormsWindow
 
         private void button5_Click(object sender, EventArgs e)
         {
-            string sql = "SELECT id_reservation, id_client, id_voyage, date_reservation, nb_places, etat_reservation FROM reservation";
+            string sql = "SELECT id_reservation, id_client, id_voyage, date_reservation, nb_places, etat_reservation, etat_paiement FROM reservation";
 
             string json = OracleJsonProcess.GetJsonFormOracle(sql);
             rtbJson.Text = JsonStyle(json);
@@ -239,9 +353,43 @@ namespace OracleToRedisImport.FormsWindow
             
             try
             {
-                migrationService.MigrerTout();
-  
-                MessageBox.Show("Données importeés avec succès dans Redis \n Clé :", "Succès", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                if (migrationServices == null)
+                {
+                    MessageBox.Show("Migration Service non initialisé!", "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                var results = migrationServices.MigrerTout();
+
+                if (results == null || results.Count == 0)
+                {
+                    MessageBox.Show("Aucune Donnée migrée!", "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+                rtbRedis.Clear();
+
+                foreach (var item in results)
+                {
+                 //   string json = item.Value;
+
+                    MigrationResult migration = item.Value;
+
+                    string json = string.IsNullOrWhiteSpace(migration.Json) ? "[]" : migration.Json;
+
+                    if (string.IsNullOrWhiteSpace(json) || !json.Trim().StartsWith("{") && !json.Trim().StartsWith("["))
+                        json = "[]"; 
+                    rtbRedis.AppendText("CLE REDIS :" + item.Key + "\n" +
+                        "TABLE :"+ migration.Table+ "\n"+
+                        JsonStyle(json)+ "\n\n---------------\n\n");
+                }
+                ColorizeJson(rtbRedis);
+
+                MessageBox.Show(
+                    "Migration complète Oracle → Redis terminée",
+                    "Succès",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information
+                );
+
             }
             catch (Exception ex)
             {
@@ -249,16 +397,6 @@ namespace OracleToRedisImport.FormsWindow
             }
 
             
-           JsonCourant = "Oracle :" +TableCourante.ToLower();
-           Console.WriteLine(JsonCourant);
-            /*
-            redisService.SaveJsons(JsonCourant, JsonCourant);
-
-            string ResultJsonRedis = redisService.GetValue(JsonCourant);
-            //MessageBox.Show("DEUG \nClé :"+ redisKeyCourant + "\n JSON null ?"+ (ResultJsonRedis == null),"Debug");
-            richTextBox1.Text = "CLES REDIS :" + JsonCourant + "\n\n" + JsonStyle(ResultJsonRedis);
-
-            ColorizeJson(rtbRedis);*/
         }
 
         
@@ -287,6 +425,7 @@ namespace OracleToRedisImport.FormsWindow
 
                 foreach(string key in keys){
                     rtbRedis.AppendText("-"+ key + "\n");
+                    Console.WriteLine("REDIS KEY => [" + key + "]");
                 }
         }
 
@@ -309,6 +448,10 @@ namespace OracleToRedisImport.FormsWindow
         {
             try
             {
+                ResetProgress();
+                UpdateProgres(30, "Migration des Utilisateurs...");
+                UpdateProgres(100, "Migrations terminées");
+
                 if (utilisateurService == null)
                 {
                     throw new Exception("Utilisateur null");
@@ -317,17 +460,35 @@ namespace OracleToRedisImport.FormsWindow
                     throw new Exception("OracleService null");
                 if(redisService == null)
                     throw new Exception("redisService null");
-                if(migrationService == null)
+                if(migrationServices == null)
                     throw new Exception("migrationService null");
 
-                string json = utilisateurService.MigrationUsersToRedis();
+              //  string json = utilisateurService.MigrationUsersToRedis();
+                MigrationResult result = utilisateurService.MigrationUsersToRedis();
+
+                MessageBox.Show("Migration des utilisateurs terminée", "Succès", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                 MessageBox.Show(
-                    "Migration des utilisateurs terminée", "Succès", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    "Migration terminée\n" +
+                    "Table :"+ result.Table+"\n" +
+                    "Lignes :"+ result.Count+"\n" +
+                    "Temps :"+ result.DurationsMs +" ms",
+                    "Succès",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information
+                );
 
-                richTextBox2.Text = json;
+                richTextBox2.Clear();
+                richTextBox2.AppendText(
+                    "===="+ result.Table+ "====\n"+
+                    "Lignes : " +result.Count +"\n"+
+                    "Temps : " + result.DurationsMs + "\n\n"+
+                    JsonStyle(result.Json)
+                    );
+                //richTextBox2.AppendText(JsonStyle(result.Json));
+
                 ColorizeJson(richTextBox2);
-                LoadJsonToTree(json);
+                LoadJsonToTree(result.Json);
             }
             catch (Exception exc)
             {
@@ -340,6 +501,98 @@ namespace OracleToRedisImport.FormsWindow
         private void richTextBox2_TextChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void button9_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                ResetProgress();
+                UpdateProgres(30, "Migration des trajets...");
+
+                UpdateProgres(100, "Migrations terminées");
+
+                //string json = trajetService.MigrationTrajetToRedis();
+
+                MigrationResult result = trajetService.MigrationTrajetToRedis();
+
+                MessageBox.Show( "Migration des Trajets terminée", "Succès", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                richTextBox2.Clear();
+                richTextBox2.AppendText("====TRAJETS====\n");
+                richTextBox2.AppendText(JsonStyle(result.Json));
+       
+                ColorizeJson(richTextBox2);
+                LoadJsonToTree(result.Json);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Erreur");
+            }
+        }
+
+        private void button10_Click(object sender, EventArgs e)
+        {
+            ResetProgress();
+            UpdateProgres(30, "Migration des Voyages...");
+
+            UpdateProgres(100, "Migrations terminées");
+
+            //string json = voyageService.MigrationVoyageToRedis();
+            MigrationResult result = voyageService.MigrationVoyageToRedis();
+
+            MessageBox.Show("Migration des Voyages terminée", "Succès", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+        
+            richTextBox2.AppendText("====VOYAGES====\n");
+            richTextBox2.AppendText(JsonStyle(result.Json));
+            ColorizeJson(richTextBox2);
+            LoadJsonToTree(result.Json);
+        }
+
+        private void button11_Click(object sender, EventArgs e)
+        {
+            ResetProgress();
+            UpdateProgres(30, "Migration des Reservations...");
+
+            UpdateProgres(100, "Migrations terminées");
+
+           // string json = reservationService.MigrationReservationToRedis();
+            MigrationResult result = reservationService.MigrationReservationToRedis();
+
+            MessageBox.Show("Migration des Reservations terminée", "Succès", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+            
+            richTextBox2.AppendText("====RESERVARTIONS====\n");
+            richTextBox2.AppendText(JsonStyle(result.Json));
+            ColorizeJson(richTextBox2);
+            LoadJsonToTree(result.Json);
+        }
+
+        private void MgrTout_Click(object sender, EventArgs e)
+        {
+
+        }
+        private void btnMigrerTout_Click(object sender, EventArgs e)
+        {
+            if (!bgMigrations.IsBusy)
+            {
+                DisableMigrationButtons();
+
+                progressMigration.Value = 0;
+                lblProgress.Text = "Démarrage de la migration...";
+                richTextBox2.Clear();
+
+                bgMigrations.RunWorkerAsync();
+            }
+        }
+
+        private void bgMigrations_DoWork_1(object sender, DoWorkEventArgs e)
+        {
+            Stopwatch total = Stopwatch.StartNew();
+
+            total.Stop();
+            lblProgress.Text = "Temps total : " + total.ElapsedMilliseconds + "ms";
         }
     }
 }
