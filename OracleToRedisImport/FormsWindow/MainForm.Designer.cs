@@ -46,23 +46,24 @@
             this.rtbJson = new System.Windows.Forms.RichTextBox();
             this.treeJson = new System.Windows.Forms.TreeView();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.textBox2 = new System.Windows.Forms.TextBox();
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
-            this.button1 = new System.Windows.Forms.Button();
             this.rtbRedis = new System.Windows.Forms.RichTextBox();
             this.btnVoirCles = new System.Windows.Forms.Button();
             this.btnImportCles = new System.Windows.Forms.Button();
             this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.lblProgress = new System.Windows.Forms.Label();
+            this.progressMigration = new System.Windows.Forms.ProgressBar();
+            this.MgrTout = new System.Windows.Forms.Button();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
             this.richTextBox2 = new System.Windows.Forms.RichTextBox();
             this.button11 = new System.Windows.Forms.Button();
             this.button10 = new System.Windows.Forms.Button();
             this.button9 = new System.Windows.Forms.Button();
             this.button8 = new System.Windows.Forms.Button();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.MgrTout = new System.Windows.Forms.Button();
-            this.progressMigration = new System.Windows.Forms.ProgressBar();
-            this.lblProgress = new System.Windows.Forms.Label();
             this.bgMigrations = new System.ComponentModel.BackgroundWorker();
+            this.btnDex = new System.Windows.Forms.Button();
             this.tabMain.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -150,9 +151,9 @@
             this.label1.Location = new System.Drawing.Point(228, 24);
             this.label1.Name = "label1";
             this.label1.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.label1.Size = new System.Drawing.Size(683, 43);
+            this.label1.Size = new System.Drawing.Size(667, 43);
             this.label1.TabIndex = 0;
-            this.label1.Text = "BIENEVENUE DANS L\'APPLICATION DE MIGRATION ";
+            this.label1.Text = "BIENVENUE DANS L\'APPLICATION DE MIGRATION ";
             // 
             // tabPage2
             // 
@@ -162,7 +163,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 29);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(1138, 615);
+            this.tabPage2.Size = new System.Drawing.Size(1138, 652);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Oracle -> JSON";
             // 
@@ -264,7 +265,7 @@
             // splitContainer1
             // 
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.splitContainer1.Location = new System.Drawing.Point(3, 394);
+            this.splitContainer1.Location = new System.Drawing.Point(3, 431);
             this.splitContainer1.Name = "splitContainer1";
             // 
             // splitContainer1.Panel1
@@ -308,8 +309,8 @@
             // tabPage3
             // 
             this.tabPage3.BackColor = System.Drawing.Color.AliceBlue;
+            this.tabPage3.Controls.Add(this.textBox2);
             this.tabPage3.Controls.Add(this.richTextBox1);
-            this.tabPage3.Controls.Add(this.button1);
             this.tabPage3.Controls.Add(this.rtbRedis);
             this.tabPage3.Controls.Add(this.btnVoirCles);
             this.tabPage3.Controls.Add(this.btnImportCles);
@@ -320,6 +321,18 @@
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "JSON -> Redis";
             // 
+            // textBox2
+            // 
+            this.textBox2.Dock = System.Windows.Forms.DockStyle.Top;
+            this.textBox2.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox2.ForeColor = System.Drawing.Color.LightSeaGreen;
+            this.textBox2.Location = new System.Drawing.Point(3, 3);
+            this.textBox2.Name = "textBox2";
+            this.textBox2.Size = new System.Drawing.Size(1132, 38);
+            this.textBox2.TabIndex = 5;
+            this.textBox2.Text = "IMPORTER TOUTES LES DONNEES D\'ORACLE VERS REDIS ET VOIR LES CLES DANS REDIS";
+            this.textBox2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
             // richTextBox1
             // 
             this.richTextBox1.BackColor = System.Drawing.SystemColors.InactiveBorder;
@@ -329,21 +342,6 @@
             this.richTextBox1.Size = new System.Drawing.Size(528, 154);
             this.richTextBox1.TabIndex = 4;
             this.richTextBox1.Text = "";
-            // 
-            // button1
-            // 
-            this.button1.AutoSize = true;
-            this.button1.BackColor = System.Drawing.Color.Crimson;
-            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.Font = new System.Drawing.Font("Calibri", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.button1.Location = new System.Drawing.Point(992, 568);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(125, 34);
-            this.button1.TabIndex = 2;
-            this.button1.Text = "Déconnexion";
-            this.button1.UseVisualStyleBackColor = false;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // rtbRedis
             // 
@@ -358,11 +356,11 @@
             this.btnVoirCles.BackColor = System.Drawing.Color.LightSeaGreen;
             this.btnVoirCles.Font = new System.Drawing.Font("Trebuchet MS", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnVoirCles.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.btnVoirCles.Location = new System.Drawing.Point(709, 141);
+            this.btnVoirCles.Location = new System.Drawing.Point(698, 141);
             this.btnVoirCles.Name = "btnVoirCles";
             this.btnVoirCles.Size = new System.Drawing.Size(285, 41);
             this.btnVoirCles.TabIndex = 1;
-            this.btnVoirCles.Text = "Voir les Clés Redis";
+            this.btnVoirCles.Text = "Voir les Clés dans Redis";
             this.btnVoirCles.UseVisualStyleBackColor = false;
             this.btnVoirCles.Click += new System.EventHandler(this.btnVoirCles_Click_1);
             // 
@@ -371,7 +369,7 @@
             this.btnImportCles.BackColor = System.Drawing.Color.LightSeaGreen;
             this.btnImportCles.Font = new System.Drawing.Font("Trebuchet MS", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnImportCles.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.btnImportCles.Location = new System.Drawing.Point(189, 141);
+            this.btnImportCles.Location = new System.Drawing.Point(151, 141);
             this.btnImportCles.Name = "btnImportCles";
             this.btnImportCles.Size = new System.Drawing.Size(294, 41);
             this.btnImportCles.TabIndex = 0;
@@ -399,6 +397,67 @@
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "Migration Directe";
             this.tabPage4.Click += new System.EventHandler(this.tabPage4_Click);
+            // 
+            // lblProgress
+            // 
+            this.lblProgress.AutoSize = true;
+            this.lblProgress.Location = new System.Drawing.Point(461, 579);
+            this.lblProgress.Name = "lblProgress";
+            this.lblProgress.Size = new System.Drawing.Size(98, 21);
+            this.lblProgress.TabIndex = 9;
+            this.lblProgress.Text = "En attente...";
+            this.lblProgress.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            // 
+            // progressMigration
+            // 
+            this.progressMigration.BackColor = System.Drawing.Color.Azure;
+            this.progressMigration.ForeColor = System.Drawing.Color.SeaGreen;
+            this.progressMigration.Location = new System.Drawing.Point(281, 613);
+            this.progressMigration.Name = "progressMigration";
+            this.progressMigration.Size = new System.Drawing.Size(564, 16);
+            this.progressMigration.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
+            this.progressMigration.TabIndex = 8;
+            // 
+            // MgrTout
+            // 
+            this.MgrTout.BackColor = System.Drawing.Color.LightSeaGreen;
+            this.MgrTout.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.MgrTout.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.MgrTout.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.MgrTout.Location = new System.Drawing.Point(456, 499);
+            this.MgrTout.Name = "MgrTout";
+            this.MgrTout.Size = new System.Drawing.Size(248, 47);
+            this.MgrTout.TabIndex = 7;
+            this.MgrTout.Text = "Migrer tout";
+            this.MgrTout.UseVisualStyleBackColor = false;
+            this.MgrTout.Click += new System.EventHandler(this.btnMigrerTout_Click);
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.BackColor = System.Drawing.Color.LightCyan;
+            this.label4.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.label4.Location = new System.Drawing.Point(473, 423);
+            this.label4.Name = "label4";
+            this.label4.Padding = new System.Windows.Forms.Padding(5);
+            this.label4.Size = new System.Drawing.Size(221, 38);
+            this.label4.TabIndex = 6;
+            this.label4.Text = "OU MIGRER TOUT ICI";
+            // 
+            // label3
+            // 
+            this.label3.BackColor = System.Drawing.Color.LightCyan;
+            this.label3.Dock = System.Windows.Forms.DockStyle.Top;
+            this.label3.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.ForeColor = System.Drawing.Color.DimGray;
+            this.label3.Location = new System.Drawing.Point(3, 3);
+            this.label3.Name = "label3";
+            this.label3.Padding = new System.Windows.Forms.Padding(5);
+            this.label3.Size = new System.Drawing.Size(1132, 42);
+            this.label3.TabIndex = 5;
+            this.label3.Text = "CLIQUEZ SUR LA MIGRATION SOUHAITER";
+            this.label3.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // richTextBox2
             // 
@@ -429,7 +488,7 @@
             this.button10.BackColor = System.Drawing.Color.LightSeaGreen;
             this.button10.Font = new System.Drawing.Font("Trebuchet MS", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button10.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.button10.Location = new System.Drawing.Point(447, 264);
+            this.button10.Location = new System.Drawing.Point(447, 255);
             this.button10.Name = "button10";
             this.button10.Size = new System.Drawing.Size(272, 42);
             this.button10.TabIndex = 2;
@@ -463,70 +522,24 @@
             this.button8.UseVisualStyleBackColor = false;
             this.button8.Click += new System.EventHandler(this.button8_Click);
             // 
-            // label3
-            // 
-            this.label3.BackColor = System.Drawing.Color.LightCyan;
-            this.label3.Dock = System.Windows.Forms.DockStyle.Top;
-            this.label3.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.ForeColor = System.Drawing.Color.DimGray;
-            this.label3.Location = new System.Drawing.Point(3, 3);
-            this.label3.Name = "label3";
-            this.label3.Padding = new System.Windows.Forms.Padding(5);
-            this.label3.Size = new System.Drawing.Size(1132, 42);
-            this.label3.TabIndex = 5;
-            this.label3.Text = "CLIQUEZ SUR LA MIGRATION SOUHAITER";
-            this.label3.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.BackColor = System.Drawing.Color.LightCyan;
-            this.label4.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.label4.Location = new System.Drawing.Point(473, 423);
-            this.label4.Name = "label4";
-            this.label4.Padding = new System.Windows.Forms.Padding(5);
-            this.label4.Size = new System.Drawing.Size(221, 38);
-            this.label4.TabIndex = 6;
-            this.label4.Text = "OU MIGRER TOUT ICI";
-            // 
-            // MgrTout
-            // 
-            this.MgrTout.BackColor = System.Drawing.Color.LightSeaGreen;
-            this.MgrTout.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.MgrTout.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.MgrTout.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.MgrTout.Location = new System.Drawing.Point(456, 499);
-            this.MgrTout.Name = "MgrTout";
-            this.MgrTout.Size = new System.Drawing.Size(248, 47);
-            this.MgrTout.TabIndex = 7;
-            this.MgrTout.Text = "Migrer tout";
-            this.MgrTout.UseVisualStyleBackColor = false;
-            this.MgrTout.Click += new System.EventHandler(this.btnMigrerTout_Click);
-            // 
-            // progressMigration
-            // 
-            this.progressMigration.BackColor = System.Drawing.Color.Azure;
-            this.progressMigration.Location = new System.Drawing.Point(281, 613);
-            this.progressMigration.Name = "progressMigration";
-            this.progressMigration.Size = new System.Drawing.Size(564, 23);
-            this.progressMigration.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
-            this.progressMigration.TabIndex = 8;
-            // 
-            // lblProgress
-            // 
-            this.lblProgress.AutoSize = true;
-            this.lblProgress.Location = new System.Drawing.Point(474, 577);
-            this.lblProgress.Name = "lblProgress";
-            this.lblProgress.Size = new System.Drawing.Size(98, 21);
-            this.lblProgress.TabIndex = 9;
-            this.lblProgress.Text = "En attente...";
-            this.lblProgress.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            // 
             // bgMigrations
             // 
             this.bgMigrations.WorkerReportsProgress = true;
+            this.bgMigrations.WorkerSupportsCancellation = true;
             this.bgMigrations.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bgMigrations_DoWork_1);
+            // 
+            // btnDex
+            // 
+            this.btnDex.BackColor = System.Drawing.Color.Crimson;
+            this.btnDex.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btnDex.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnDex.ForeColor = System.Drawing.Color.White;
+            this.btnDex.Location = new System.Drawing.Point(1033, 685);
+            this.btnDex.Name = "btnDex";
+            this.btnDex.Size = new System.Drawing.Size(106, 27);
+            this.btnDex.TabIndex = 10;
+            this.btnDex.Text = "Déconnexion";
+            this.btnDex.UseVisualStyleBackColor = false;
             // 
             // MainForm
             // 
@@ -536,6 +549,7 @@
             this.BackColor = System.Drawing.Color.DarkCyan;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.ClientSize = new System.Drawing.Size(1146, 712);
+            this.Controls.Add(this.btnDex);
             this.Controls.Add(this.tabMain);
             this.Controls.Add(this.textBox1);
             this.DoubleBuffered = true;
@@ -577,7 +591,6 @@
         private System.Windows.Forms.Button button10;
         private System.Windows.Forms.Button button9;
         private System.Windows.Forms.Button button8;
-        private System.Windows.Forms.Button button1;
         private System.Windows.Forms.RichTextBox rtbRedis;
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.Button btnExporteJson;
@@ -599,5 +612,7 @@
         private System.Windows.Forms.ProgressBar progressMigration;
         private System.Windows.Forms.Label lblProgress;
         private System.ComponentModel.BackgroundWorker bgMigrations;
+        private System.Windows.Forms.Button btnDex;
+        private System.Windows.Forms.TextBox textBox2;
     }
 }

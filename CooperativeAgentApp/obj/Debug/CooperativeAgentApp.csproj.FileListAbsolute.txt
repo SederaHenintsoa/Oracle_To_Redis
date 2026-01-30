@@ -1,0 +1,12 @@
+D:\Document\Admin_oracle\OracleToRedisImport\CooperativeAgentApp\obj\Debug\CooperativeAgentApp.csprojResolveAssemblyReference.cache
+D:\Document\Admin_oracle\OracleToRedisImport\CooperativeAgentApp\obj\Debug\CooperativeAgentApp.Forms.LoginForm.resources
+D:\Document\Admin_oracle\OracleToRedisImport\CooperativeAgentApp\obj\Debug\CooperativeAgentApp.Properties.Resources.resources
+D:\Document\Admin_oracle\OracleToRedisImport\CooperativeAgentApp\obj\Debug\CooperativeAgentApp.csproj.GenerateResource.Cache
+D:\Document\Admin_oracle\OracleToRedisImport\CooperativeAgentApp\bin\Debug\CooperativeAgentApp.exe.config
+D:\Document\Admin_oracle\OracleToRedisImport\CooperativeAgentApp\bin\Debug\CooperativeAgentApp.exe
+D:\Document\Admin_oracle\OracleToRedisImport\CooperativeAgentApp\bin\Debug\CooperativeAgentApp.pdb
+D:\Document\Admin_oracle\OracleToRedisImport\CooperativeAgentApp\bin\Debug\Newtonsoft.Json.dll
+D:\Document\Admin_oracle\OracleToRedisImport\CooperativeAgentApp\bin\Debug\Oracle.ManagedDataAccess.dll
+D:\Document\Admin_oracle\OracleToRedisImport\CooperativeAgentApp\bin\Debug\Newtonsoft.Json.xml
+D:\Document\Admin_oracle\OracleToRedisImport\CooperativeAgentApp\obj\Debug\CooperativeAgentApp.exe
+D:\Document\Admin_oracle\OracleToRedisImport\CooperativeAgentApp\obj\Debug\CooperativeAgentApp.pdb

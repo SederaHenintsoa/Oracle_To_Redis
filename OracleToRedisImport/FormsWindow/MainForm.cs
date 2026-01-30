@@ -94,6 +94,12 @@ namespace OracleToRedisImport.FormsWindow
 
         private void bgMigrations_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
+            EnableMigrationButtons();
+            if (e.Cancelled)
+            {
+                lblProgress.Text = "Migration Annulée";
+                return;
+            }
             var result = e.Result as MigrationWorkerResult;
 
             richTextBox2.Clear();
@@ -518,10 +524,25 @@ namespace OracleToRedisImport.FormsWindow
 
                 MessageBox.Show( "Migration des Trajets terminée", "Succès", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
+                MessageBox.Show(
+                   "Migration terminée\n" +
+                   "Table :" + result.Table + "\n" +
+                   "Lignes :" + result.Count + "\n" +
+                   "Temps :" + result.DurationsMs + " ms",
+                   "Succès",
+                   MessageBoxButtons.OK,
+                   MessageBoxIcon.Information
+               );
+
                 richTextBox2.Clear();
-                richTextBox2.AppendText("====TRAJETS====\n");
-                richTextBox2.AppendText(JsonStyle(result.Json));
-       
+                richTextBox2.AppendText(
+                    "====" + result.Table + "====\n" +
+                    "Lignes : " + result.Count + "\n" +
+                    "Temps : " + result.DurationsMs + "\n\n" +
+                    JsonStyle(result.Json)
+                    );
+
+
                 ColorizeJson(richTextBox2);
                 LoadJsonToTree(result.Json);
             }
@@ -543,9 +564,26 @@ namespace OracleToRedisImport.FormsWindow
 
             MessageBox.Show("Migration des Voyages terminée", "Succès", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-        
-            richTextBox2.AppendText("====VOYAGES====\n");
-            richTextBox2.AppendText(JsonStyle(result.Json));
+
+            MessageBox.Show(
+               "Migration terminée\n" +
+               "Table :" + result.Table + "\n" +
+               "Lignes :" + result.Count + "\n" +
+               "Temps :" + result.DurationsMs + " ms",
+               "Succès",
+               MessageBoxButtons.OK,
+               MessageBoxIcon.Information
+           );
+
+            richTextBox2.Clear();
+            richTextBox2.AppendText(
+                "====" + result.Table + "====\n" +
+                "Lignes : " + result.Count + "\n" +
+                "Temps : " + result.DurationsMs + "\n\n" +
+                JsonStyle(result.Json)
+                );
+
+
             ColorizeJson(richTextBox2);
             LoadJsonToTree(result.Json);
         }
@@ -562,9 +600,26 @@ namespace OracleToRedisImport.FormsWindow
 
             MessageBox.Show("Migration des Reservations terminée", "Succès", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-            
-            richTextBox2.AppendText("====RESERVARTIONS====\n");
-            richTextBox2.AppendText(JsonStyle(result.Json));
+
+            MessageBox.Show(
+               "Migration terminée\n" +
+               "Table :" + result.Table + "\n" +
+               "Lignes :" + result.Count + "\n" +
+               "Temps :" + result.DurationsMs + " ms",
+               "Succès",
+               MessageBoxButtons.OK,
+               MessageBoxIcon.Information
+           );
+
+            richTextBox2.Clear();
+            richTextBox2.AppendText(
+                "====" + result.Table + "====\n" +
+                "Lignes : " + result.Count + "\n" +
+                "Temps : " + result.DurationsMs + "\n\n" +
+                JsonStyle(result.Json)
+                );
+
+
             ColorizeJson(richTextBox2);
             LoadJsonToTree(result.Json);
         }
