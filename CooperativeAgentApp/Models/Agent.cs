@@ -6,11 +6,12 @@ using System.Threading.Tasks;
 
 namespace CooperativeAgentApp.Models
 {
-    class Agent
+    public class Agent
     {
         public int id_agent { get; set; }
         public string username { get; set; }
         public string password { get; set; }
         public bool actif { get; set; }
+        public bool isAdmin { get; set;  }
     }
 }

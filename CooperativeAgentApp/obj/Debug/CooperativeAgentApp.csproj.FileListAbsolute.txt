@@ -10,3 +10,4 @@ D:\Document\Admin_oracle\OracleToRedisImport\CooperativeAgentApp\bin\Debug\Oracl
 D:\Document\Admin_oracle\OracleToRedisImport\CooperativeAgentApp\bin\Debug\Newtonsoft.Json.xml
 D:\Document\Admin_oracle\OracleToRedisImport\CooperativeAgentApp\obj\Debug\CooperativeAgentApp.exe
 D:\Document\Admin_oracle\OracleToRedisImport\CooperativeAgentApp\obj\Debug\CooperativeAgentApp.pdb
+D:\Document\Admin_oracle\OracleToRedisImport\CooperativeAgentApp\bin\Debug\auth\agent_auth.json

@@ -69,10 +69,10 @@
       <DependentUpon>TicketForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\Agent.cs" />
-    <Compile Include="Models\AuthRoot.cs" />
+    <Compile Include="auth\AuthRoot.cs" />
+    <Compile Include="MyServices\AuthService.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\AuthService.cs" />
     <EmbeddedResource Include="Forms\LoginForm.resx">
       <DependentUpon>LoginForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -85,7 +85,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <None Include="auth\agent_auth.json" />
+    <Content Include="auth\agent_auth.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
